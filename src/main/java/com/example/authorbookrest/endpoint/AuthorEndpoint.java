@@ -1,5 +1,7 @@
 package com.example.authorbookrest.endpoint;
 
+import com.example.authorbookrest.dto.AuthorResponseDto;
+import com.example.authorbookrest.dto.SaveAuthorDto;
 import com.example.authorbookrest.entity.Author;
 import com.example.authorbookrest.service.AuthorService;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +18,18 @@ public class AuthorEndpoint {
     private final AuthorService authorService;
 
     @PostMapping
-    public Author createAuthor(@RequestBody Author author) {
-        return authorService.create(author);
+    public AuthorResponseDto createAuthor(@RequestBody SaveAuthorDto authorDto) {
+        return authorService.create(authorDto);
     }
 
     @GetMapping
-    public List<Author> getAll() {
+    public List<AuthorResponseDto> getAll() {
         return authorService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> getById(@PathVariable("id") int id) {
-        Author author = authorService.getById(id);
+    public ResponseEntity<AuthorResponseDto> getById(@PathVariable("id") int id) {
+        AuthorResponseDto author = authorService.getById(id);
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
@@ -35,17 +37,18 @@ public class AuthorEndpoint {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Author> update(@PathVariable("id") int id, @RequestBody Author author) {
-        Author byId = authorService.getById(id);
+    public ResponseEntity<AuthorResponseDto> update(@PathVariable("id") int id,
+                                         @RequestBody SaveAuthorDto authorDto) {
+        AuthorResponseDto byId = authorService.getById(id);
         if (byId == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(authorService.update(id, author));
+        return ResponseEntity.ok(authorService.update(id, authorDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Author> delteById(@PathVariable("id") int id) {
-        Author byId = authorService.getById(id);
+    public ResponseEntity<AuthorResponseDto> delteById(@PathVariable("id") int id) {
+        AuthorResponseDto byId = authorService.getById(id);
         if (byId == null) {
             return ResponseEntity.notFound().build();
         }

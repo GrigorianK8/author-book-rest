@@ -1,28 +1,21 @@
-package com.example.authorbookrest.entity;
+package com.example.authorbookrest.dto;
 
-import jakarta.persistence.*;
+
+import com.example.authorbookrest.entity.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "author")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class Author {
+public class AuthorResponseDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String name;
     private String surname;
-
-    @Enumerated(EnumType.STRING)
     private Gender gender;
-
     private int age;
 }
