@@ -3,6 +3,7 @@ package com.example.authorbookrest.service.impl;
 import com.example.authorbookrest.dto.AuthorResponseDto;
 import com.example.authorbookrest.dto.SaveAuthorDto;
 import com.example.authorbookrest.entity.Author;
+import com.example.authorbookrest.mapper.AuthorMapper;
 import com.example.authorbookrest.repository.AuthorRepository;
 import com.example.authorbookrest.service.AuthorService;
 import lombok.RequiredArgsConstructor;
@@ -16,23 +17,14 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
 
     @Override
-    public AuthorResponseDto create(SaveAuthorDto author) {
-        Author savedAuthor = authorRepository.save(Author.builder()
-                .name(author.getName())
-                .surname(author.getSurname())
-                .age(author.getAge())
-                .gender(author.getGender())
-                .build());
-
-        return AuthorResponseDto.builder()
-                .id(savedAuthor.getId())
-                .name(savedAuthor.getName())
-                .surname(savedAuthor.getSurname())
-                .age(savedAuthor.getAge())
-                .gender(savedAuthor.getGender())
-                .build();
+    public AuthorResponseDto create(SaveAuthorDto saveAuthorDto) {
+        Author authorEntity = authorMapper.map(saveAuthorDto);
+        return authorMapper.map(authorRepository.save(
+                authorEntity)
+        );
     }
 
     @Override
@@ -40,13 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
         List<Author> all = authorRepository.findAll();
         List<AuthorResponseDto> authorResponseDtos = new ArrayList<>();
         for (Author author : all) {
-            authorResponseDtos.add(AuthorResponseDto.builder()
-                    .id(author.getId())
-                    .name(author.getName())
-                    .surname(author.getSurname())
-                    .age(author.getAge())
-                    .gender(author.getGender())
-                    .build());
+            authorResponseDtos.add(authorMapper.map(author));
         }
         return authorResponseDtos;
     }
@@ -58,31 +44,16 @@ public class AuthorServiceImpl implements AuthorService {
         if (author == null) {
             return null;
         }
-        return AuthorResponseDto.builder()
-                .id(author.getId())
-                .name(author.getName())
-                .surname(author.getSurname())
-                .age(author.getAge())
-                .gender(author.getGender())
-                .build();
+        return authorMapper.map(author);
     }
 
     @Override
     public AuthorResponseDto update(int id, SaveAuthorDto author) {
-        Author savedAuthor = authorRepository.save(Author.builder()
-                .id(id)
-                .name(author.getName())
-                .surname(author.getSurname())
-                .age(author.getAge())
-                .gender(author.getGender())
-                .build());
-        return AuthorResponseDto.builder()
-                .id(savedAuthor.getId())
-                .name(savedAuthor.getName())
-                .surname(savedAuthor.getSurname())
-                .age(savedAuthor.getAge())
-                .gender(savedAuthor.getGender())
-                .build();
+        Author savedAuthor = authorMapper.map(author);
+        savedAuthor.setId(id);
+        authorRepository.save(savedAuthor);
+
+        return authorMapper.map(savedAuthor);
     }
 
     @Override

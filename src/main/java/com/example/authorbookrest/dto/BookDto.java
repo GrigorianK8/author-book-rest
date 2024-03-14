@@ -1,7 +1,5 @@
 package com.example.authorbookrest.dto;
 
-
-import com.example.authorbookrest.entity.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthorResponseDto {
+public class BookDto {
 
     private int id;
-    private String firstName;
-    private String surname;
-    private Gender gender;
-    private int age;
+    private String description;
+    private double price;
+    private String title;
+    private AuthorResponseDto authorResponseDto;
 }
