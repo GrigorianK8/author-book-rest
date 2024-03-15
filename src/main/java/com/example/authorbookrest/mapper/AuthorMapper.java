@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AuthorMapper {
 
-    @Mapping(target = "firstName", source = "name")
+//    @Mapping(target = "firstName", source = "name")
     AuthorResponseDto map(Author author);
 
     @Mapping(target = "createdDate", expression = "Java(java.time.localDate.now())")
