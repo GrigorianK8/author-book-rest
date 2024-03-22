@@ -4,6 +4,7 @@ import com.example.authorbookrest.dto.BookDto;
 import com.example.authorbookrest.dto.BookFilterDto;
 import com.example.authorbookrest.dto.SaveBookDto;
 import com.example.authorbookrest.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +18,7 @@ public class BookEndpoint {
     private final BookService bookService;
 
     @PostMapping()
-    public BookDto create(@RequestBody SaveBookDto saveBookDto) {
-        if (saveBookDto.getTitle() == null) {
-            throw new IllegalArgumentException("Title can not be null.");
-        }
+    public BookDto create(@Valid @RequestBody SaveBookDto saveBookDto) {
         return bookService.save(saveBookDto);
     }
 
