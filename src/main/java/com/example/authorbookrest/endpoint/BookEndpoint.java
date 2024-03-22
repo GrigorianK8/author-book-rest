@@ -1,6 +1,7 @@
 package com.example.authorbookrest.endpoint;
 
 import com.example.authorbookrest.dto.BookDto;
+import com.example.authorbookrest.dto.BookFilterDto;
 import com.example.authorbookrest.dto.SaveBookDto;
 import com.example.authorbookrest.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,9 @@ public class BookEndpoint {
 
     @PostMapping()
     public BookDto create(@RequestBody SaveBookDto saveBookDto) {
+        if (saveBookDto.getTitle() == null) {
+            throw new IllegalArgumentException("Title can not be null.");
+        }
         return bookService.save(saveBookDto);
     }
 
@@ -25,4 +29,8 @@ public class BookEndpoint {
         return bookService.getAll();
     }
 
+    @PostMapping("/filter")
+    public List<BookDto> getAllByFilter(@RequestBody BookFilterDto bookFilterDto) {
+        return bookService.getAllByFilter(bookFilterDto);
+    }
 }
